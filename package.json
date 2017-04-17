@@ -1,7 +1,7 @@
 {
-  "name": "vue-shopping",
+  "name": "vue-sale-platform",
   "version": "1.0.0",
-  "description": "An Electronic business platform base on Vue(imooc version)",
+  "description": "An Sale Platform base on Vue(imooc version)",
   "author": "Sellenite <714627528@qq.com>",
   "private": true,
   "scripts": {

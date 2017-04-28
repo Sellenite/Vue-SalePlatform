@@ -40,6 +40,16 @@
     <div class="animated" :class="{'bounceOutRight': flag}">test animate.css</div>
     <button v-on:click="flagToggle">123</button>
     <pagination :total="total" :display="display" :current="current" :pagegroup="pagegroup" v-on:pagechange="pagechange"></pagination>
+    <a v-bind:href="website.link" :title="website.title" target="_blank" v-bind:class="['target1', 'target2', { 'target3': flag }]">这是一个通过v-bind得到的a标签</a>
+    <ul>
+      <li v-for="(item, index) in classList" 
+          v-bind:class="classList[index]" 
+          v-bind:style="{ 'color': item }">
+          {{ item }}
+      </li>
+    </ul>
+    <div class="testjQuery">this content will be rewrote by jQuery</div>
+    <button v-on:click="testjQuery">use jQuery</button>
   </div>
 </template>
 
@@ -82,7 +92,18 @@ export default {
         margin: '10px 0'
       },
       ifFlag: 'C',
-      flag: false
+      flag: false,
+      website: {
+        link: 'http://www.baidu.com',
+        title: '百度'
+      },
+      classList: [
+        'red',
+        'yellow',
+        'blue',
+        'green',
+        'purple'
+      ]
     };
   },
   methods: {
@@ -96,6 +117,9 @@ export default {
     },
     pagechange(p) {
       console.log(p);
+    },
+    testjQuery() {
+      $('.testjQuery').html('success');
     }
   },
   components: {
@@ -123,5 +147,9 @@ li {
 
 a {
   color: #42b983;
+}
+
+.target3 {
+  color: #666666;
 }
 </style>

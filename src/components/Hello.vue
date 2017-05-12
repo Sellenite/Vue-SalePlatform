@@ -107,12 +107,57 @@
       </select>
       {{ selectValPlus }}
     </div>
+    <div>
+      测试computed+正则返回
+      <input type="text" v-model="testComputedInput"> {{ testComputedShow }} | {{ testComputedShowByMethods() }}
+    </div>
+    <div>
+      测试watch返回的值
+      <input type="text" v-model="testWatchVal">
+    </div>
+    <component v-bind:is="useIsToBindComA" v-bind:valueForComA="valueForComA">
+      <p slot="header">这是name为header的内容</p>
+      <p>测试slot，代替子组件匿名slot的内容</p>
+      <p slot="footer">这是name为footer的内容</p>
+    </component>
+    <keep-alive>
+      <p v-bind:is="useIsToBindComB"></p>
+    </keep-alive>
+    <button @click="testTransition = !testTransition">testTransition</button>
+    <transition name="fade">
+      <div v-show="testTransition">testTransitionObject</div>
+    </transition>
+    <div>
+      <button @click="toggleComponent">toggleComponent</button>
+      <transition name="fade2" mode="out-in">
+        <component v-bind:is="componentToToggle"></component>
+      </transition>
+    </div>
+    <button @click="testTransition2 = !testTransition2">testTransition2</button>
+    <transition name="fade3" enter-active-class="animated tada" leave-active-class="animated bounceOutRight">
+      <div v-show="testTransition2">使用animate.css结合transition的testTransitionObject2</div>
+    </transition>
+    <div id="example-4">
+      <button @click="showTransitionByJs = !showTransitionByJs">
+        Toggle
+      </button>
+      <transition v-on:before-enter="beforeEnter" v-on:enter="enter" v-on:leave="leave" v-bind:css="false">
+        <p v-if="showTransitionByJs">
+          Demo
+        </p>
+      </transition>
+    </div>
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
 import pagination from './pagination';
+import comA from './comA';
+
+var comB = {
+  template: '<h2>这是子组件comB</h2>'
+};
 
 export default {
   name: 'hello',
@@ -168,6 +213,15 @@ export default {
       radioVal: '',
       selectVal: 1,
       selectValPlus: 1,
+      testComputedInput: '',
+      testWatchVal: '',
+      useIsToBindComA: 'comA',
+      useIsToBindComB: comB,
+      componentToToggle: 'comA',
+      testTransition: false,
+      testTransition2: false,
+      showTransitionByJs: false,
+      valueForComA: '这是来自父组件的值，通过v-bind传值，props收取',
       options: [
         {
           label: '选项一',
@@ -206,10 +260,45 @@ export default {
       if (event.keyCode === 13) {
         alert('你按的是Enter键！');
       }
+    },
+    testComputedShowByMethods() {
+      return this.testComputedInput.replace(/\d/g, '');
+    },
+    toggleComponent() {
+      if (this.componentToToggle === 'comA') {
+        this.componentToToggle = comB;
+      } else {
+        this.componentToToggle = 'comA';
+      }
+    },
+    beforeEnter: function (el) {
+      el.style.opacity = 0;
+      el.style.transformOrigin = 'left';
+    },
+    enter: function (el, done) {
+      $(el).animate({ opacity: 1, fontSize: '1.4em' }, { duration: 300 });
+      $(el).animate({ fontSize: '1em' }, { complete: done });
+    },
+    leave: function (el, done) {
+      $(el).animate({
+        opacity: 0
+      }, { complete: done });
+    }
+  },
+  computed: {
+    testComputedShow() {
+      // 下面正则的意思是。全局匹配数字，然后用空字符取代，即删去数字
+      return this.testComputedInput.replace(/\d/g, '');
+    }
+  },
+  watch: {
+    testWatchVal(newVal, oldVal) {
+      console.log(newVal, oldVal);
     }
   },
   components: {
-    pagination
+    pagination,
+    comA
   }
 };
 </script>
@@ -237,5 +326,30 @@ a {
 
 .target3 {
   color: #666666;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: 0.5s ease;
+}
+
+.fade-enter {
+  transform: translateX(20px);
+  opacity: 0;
+}
+
+.fade-leave-active {
+  transform: translateX(-20px);
+  opacity: 0;
+}
+
+.fade2-enter-active,
+.fade2-leave-active {
+  transition: 0.5s ease;
+}
+
+.fade2-enter,
+.fade2-leave-active {
+  opacity: 0;
 }
 </style>

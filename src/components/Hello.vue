@@ -151,8 +151,8 @@
       <p v-focus:test.a.b="testDirective"></p>
     </div>
     <div>
-      <router-link :to="{ path: '/Hi' }">click here to show children router！</router-link>
-      <router-link :to="{ path: '/' }" tag="li">click here to hide children router！</router-link>
+      <router-link :to="{ path: '/Hello/Hi' }">click here to show children router！</router-link>
+      <router-link :to="{ path: '/Hello' }" tag="li">click here to hide children router！</router-link>
     </div>
     <router-view></router-view>
   </div>

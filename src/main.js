@@ -2,7 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import Vuex from 'vuex';
-import App from './App';
+import Layout from './components/layout';
 import router from './router';
 import VueResourse from 'vue-resource';
 import 'animate.css';
@@ -48,6 +48,6 @@ new Vue({
   el: '#app',
   router,
   store,
-  template: '<App/>',
-  components: { App }
+  template: '<Layout/>',
+  components: { Layout }
 });

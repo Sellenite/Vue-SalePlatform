@@ -147,6 +147,14 @@
         </p>
       </transition>
     </div>
+    <div>
+      <p v-focus:test.a.b="testDirective"></p>
+    </div>
+    <div>
+      <router-link :to="{ path: '/Hi' }">click here to show children router！</router-link>
+      <router-link :to="{ path: '/' }" tag="li">click here to hide children router！</router-link>
+    </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -161,6 +169,20 @@ var comB = {
 
 export default {
   name: 'hello',
+  directives: {
+    focus: {
+      bind(el, binding, vnode) {
+        var s = JSON.stringify;
+        el.innerHTML =
+          'name:' + s(binding.name) + '</br>' +
+          'value:' + s(binding.value) + '</br>' +
+          'expression:' + s(binding.expression) + '</br>' +
+          'argument:' + s(binding.arg) + '</br>' +
+          'modifiers:' + s(binding.modifiers) + '</br>' +
+          'vnode keys:' + Object.keys(vnode).join(', ');
+      }
+    }
+  },
   data() {
     return {
       msg: 'Welcome to Your Vue.js App',
@@ -221,6 +243,7 @@ export default {
       testTransition: false,
       testTransition2: false,
       showTransitionByJs: false,
+      testDirective: 'Hello',
       valueForComA: '这是来自父组件的值，通过v-bind传值，props收取',
       options: [
         {

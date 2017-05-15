@@ -149,7 +149,7 @@ export default {
         };
     },
     created() {
-        this.$http.get('api/getNewsList').then((res) => {
+        this.$http.post('api/getNewsList').then((res) => {
             this.newsList = res.data;
         }, (err) => {
             console.log(err);

@@ -29,7 +29,7 @@ var devMiddleware = require('webpack-dev-middleware')(compiler, {
 })
 
 var hotMiddleware = require('webpack-hot-middleware')(compiler, {
-  log: () => {}
+  log: () => { }
 })
 // force page reload when html-webpack-plugin template changes
 compiler.plugin('compilation', function (compilation) {
@@ -82,15 +82,45 @@ devMiddleware.waitUntilValid(() => {
 var server = app.listen(port)
 
 // server.js
-const jsonServer = require('json-server')
-const apiServer = jsonServer.create()
-const apiRouter = jsonServer.router('db.json')
-const middlewares = jsonServer.defaults()
+// const jsonServer = require('json-server')
+// const apiServer = jsonServer.create()
+// const apiRouter = jsonServer.router('db.json')
+// const middlewares = jsonServer.defaults()
 
-apiServer.use(middlewares)
-apiServer.use('/api', apiRouter)
-apiServer.listen(port + 1, () => {
-  console.log('JSON Server is running')
+// apiServer.use(middlewares)
+// apiServer.use('/api', apiRouter)
+// apiServer.listen(port + 1, () => {
+//   console.log('JSON Server is running')
+// })
+
+// 使用express添加新地址
+var apiServer = express()
+var bodyParser = require('body-parser')
+apiServer.use(bodyParser.urlencoded({ extended: true }))
+apiServer.use(bodyParser.json())
+var apiRouter = express.Router()
+var fs = require('fs')
+apiRouter.route('/:apiName')
+  .all(function (req, res) {
+    fs.readFile('./db.json', 'utf8', function (err, data) {
+      if (err) throw err
+      var data = JSON.parse(data)
+      if (data[req.params.apiName]) {
+        res.json(data[req.params.apiName])
+      }
+      else {
+        res.send('no such api name')
+      }
+    })
+  })
+
+apiServer.use('/api', apiRouter);
+apiServer.listen(port + 1, function (err) {
+  if (err) {
+    console.log(err)
+    return
+  }
+  console.log('Listening at http://localhost:' + (port + 1) + '\n')
 })
 
 module.exports = {

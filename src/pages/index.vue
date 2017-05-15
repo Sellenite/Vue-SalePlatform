@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="index-right">
-            <!--<slide-show :slides="slides" :inv="invTime"></slide-show>-->
+            <slide-show :slides="slides" :invTime="invTime"></slide-show>
             <div class="index-board-list">
                 <div class="index-board-item" v-for="(item, index) in boardList" :class="[{'line-last' : index % 2 !== 0}, 'index-board-' + item.id]">
                     <div class="index-board-item-inner">
@@ -42,29 +42,31 @@
 </template>
 
 <script>
+import slideShow from '../components/slideShow2';
+
 export default {
     data () {
         return {
-        invTime: 2000,
+        invTime: 3000,
         slides: [
             {
                 src: require('../assets/slideShow/pic1.jpg'),
-                title: 'xxx1',
+                title: 'React.js入门与实战',
                 href: 'detail/analysis'
             },
             {
                 src: require('../assets/slideShow/pic2.jpg'),
-                title: 'xxx2',
+                title: '成为更高级的Android开发工程师',
                 href: 'detail/count'
             },
             {
                 src: require('../assets/slideShow/pic3.jpg'),
-                title: 'xxx3',
+                title: '玩转算法面试',
                 href: 'http://xxx.xxx.com'
             },
             {
                 src: require('../assets/slideShow/pic4.jpg'),
-                title: 'xxx4',
+                title: 'React Native开发跨平台Github App',
                 href: 'detail/forecast'
             }
         ],
@@ -147,6 +149,9 @@ export default {
                 }
             }
         };
+    },
+    components: {
+        slideShow
     },
     created() {
         this.$http.post('api/getNewsList').then((res) => {

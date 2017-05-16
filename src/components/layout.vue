@@ -7,11 +7,11 @@
                 </router-link>
                 <div class="head-nav">
                     <ul class="nav-list">
-                        <li>登录</li>
+                        <li @click="logClick">登录</li>
                         <li class="nav-pile">|</li>
-                        <li>注册</li>
+                        <li @click="regClick">注册</li>
                         <li class="nav-pile">|</li>
-                        <li>关于</li>
+                        <li @click="aboutClick">关于</li>
                     </ul>
                 </div>
             </div>
@@ -24,15 +24,49 @@
         <div class="app-foot">
             <p>© 2017 yuuhei</p>
         </div>
+        <my-dialog :is-show="isShowAboutDialog" @on-close="closeDialog('isShowAboutDialog')">
+            about
+        </my-dialog>
+    
+        <my-dialog :is-show="isShowLogDialog" @on-close="closeDialog('isShowLogDialog')">
+            log
+        </my-dialog>
+    
+        <my-dialog :is-show="isShowRegDialog" @on-close="closeDialog('isShowRegDialog')">
+            reg
+        </my-dialog>
     </div>
 </template>
 
 <script>
-    export default {
-        data() {
-            return {};
+import Dialog from './base/dialog';
+
+export default {
+    data() {
+        return {
+            isShowAboutDialog: false,
+            isShowLogDialog: false,
+            isShowRegDialog: false
+        };
+    },
+    methods: {
+        aboutClick() {
+            this.isShowAboutDialog = true;
+        },
+        logClick() {
+            this.isShowLogDialog = true;
+        },
+        regClick() {
+            this.isShowRegDialog = true;
+        },
+        closeDialog(attr) {
+            this[attr] = false;
         }
-    };
+    },
+    components: {
+        MyDialog: Dialog
+    }
+};
 </script>
 
 <style>
@@ -136,6 +170,11 @@ video {
 
 
 
+
+
+
+
+
 /* HTML5 display-role reset for older browsers */
 
 article,
@@ -194,10 +233,12 @@ body {
 body,
 html {
     height: 100%;
+    width: 100%;
 }
 
 #layout {
     min-height: 100%;
+    min-width: 1200px;
     position: relative;
 }
 

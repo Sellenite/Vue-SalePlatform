@@ -72,28 +72,28 @@ export default {
         ],
         boardList: [
             {
-                title: '开放产品',
+                title: '流量分析',
                 description: '开放产品是一款开放产品',
                 id: 'car',
                 toKey: 'analysis',
                 saleout: false
             },
             {
-                title: '品牌营销',
+                title: '数据统计',
                 description: '品牌营销帮助你的产品更好地找到定位',
                 id: 'earth',
                 toKey: 'count',
                 saleout: false
             },
             {
-                title: '使命必达',
+                title: '数据预测',
                 description: '使命必达快速迭代永远保持最前端的速度',
                 id: 'loud',
                 toKey: 'forecast',
                 saleout: true
             },
             {
-                title: '勇攀高峰',
+                title: '广告发布',
                 description: '帮你勇闯高峰，到达事业的顶峰',
                 id: 'hill',
                 toKey: 'publish',

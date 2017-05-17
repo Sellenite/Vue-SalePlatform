@@ -21,10 +21,16 @@
       "url": "http://hearstone.com"
     }
   ],
-  "login": {
-    "username": "yudongdong",
-    "userId": 123123
-  },
+  "login": [
+    {
+      "usernameModel": "@yudongdong",
+      "passwordModel": "123123"
+    },
+    {
+      "usernameModel": "@yuuhei",
+      "passwordModel": "199412"
+    }
+  ],
   "getPrice": {
     "amount": 678
   },

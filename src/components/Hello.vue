@@ -115,7 +115,7 @@
       测试watch返回的值
       <input type="text" v-model="testWatchVal">
     </div>
-    <component v-bind:is="useIsToBindComA" v-bind:valueForComA="valueForComA">
+    <component v-bind:is="useIsToBindComA" v-bind:valueForComA="valueForComA" v-bind:testComAFunc="testComAFunc">
       <p slot="header">这是name为header的内容</p>
       <p>测试slot，代替子组件匿名slot的内容</p>
       <p slot="footer">这是name为footer的内容</p>
@@ -244,6 +244,15 @@ export default {
       testTransition2: false,
       showTransitionByJs: false,
       testDirective: 'Hello',
+      testComAFunc: [
+        {
+          name: 'test',
+          path: 'http://www.baidu.com',
+          showHref() {
+            console.log(window.location.href);
+          }
+        }
+      ],
       valueForComA: '这是来自父组件的值，通过v-bind传值，props收取',
       options: [
         {

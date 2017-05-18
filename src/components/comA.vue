@@ -9,12 +9,19 @@
             </main>
             <slot name="footer"></slot>
         </div>
+        <button v-on:click="clickAAA">测试父元素传入的值是否带有全部内容</button>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['valueForComA']
+        props: ['valueForComA', 'testComAFunc'],
+        methods: {
+            clickAAA() {
+                this.testComAFunc[0].showHref();
+                console.log(this.testComAFunc);
+            }
+        }
     };
 </script>
 

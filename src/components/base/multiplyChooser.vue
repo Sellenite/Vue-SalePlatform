@@ -1,19 +1,15 @@
 <template>
-    <div class="chooser-component">
-        <ul class="chooser-list">
-          <li
-          v-for="(item, index) in selections"
-          @click="toggleSelection(index)"
-          :title="item.label"
-          :class="{active: checkActive(index)}"
-          >{{ item.label }}</li>
-        </ul>
-      </div>
-    </div>
+  <div class="chooser-component">
+    <ul class="chooser-list">
+      <li v-for="(item, index) in selections" @click="addItem(index)" :title="item.label" :class="{ 'active': list[index] }">{{ item.label }}</li>
+    </ul>
+  </div>
+  </div>
 </template>
 
 <script>
-import _ from 'lodash'
+import Vue from 'vue';
+
 export default {
   props: {
     selections: {
@@ -24,28 +20,31 @@ export default {
       }]
     }
   },
-  data () {
+  data() {
     return {
-      nowIndexes: [0]
-    }
+      list: [],
+      selectionsList: []
+    };
   },
   methods: {
-    toggleSelection (index) {
-      if (this.nowIndexes.indexOf(index) === -1) {
-        this.nowIndexes.push(index)  
+    addItem(index) {
+      // 注意，由于vue直接修改数组里的某个参数，或者改变数组的length，data是变了，但是不会引起页面的重新渲染，
+      // 这时候就需要使用Vue.set或splice来引起页面的渲染，由于数组一开始是空数组，所以splice不行，改用Vue.set。
+      // 根据这个list来判断数据有没有被勾上，和设置style。
+      // _.remove，_.map是lodash插件的API用法
+      if (!this.list[index]) {
+        Vue.set(this.list, index, true);
+        this.selectionsList.push(index);
+      } else {
+        Vue.set(this.list, index, false);
+        _.remove(this.selectionsList, (idx) => {
+          return idx === index;
+        });
       }
-      else {
-        this.nowIndexes = _.remove(this.nowIndexes, (idx) => {
-          return idx !== index
-        })
-      }
-      let nowObjArray = _.map(this.nowIndexes, (idx) => {
-        return this.selections[idx]
-      })
-      this.$emit('on-change', nowObjArray)
-    },
-    checkActive (index) {
-      return this.nowIndexes.indexOf(index) !== -1
+      var selectionsListEmit = _.map(this.selectionsList, (idx) => {
+        return this.selections[idx];
+      });
+      this.$emit('on-change', selectionsListEmit);
     }
   }
 }
@@ -56,7 +55,8 @@ export default {
   position: relative;
   display: inline-block;
 }
-.chooser-list li{
+
+.chooser-list li {
   display: inline-block;
   border: 1px solid #e3e3e3;
   height: 25px;
@@ -67,6 +67,7 @@ export default {
   text-align: center;
   cursor: pointer;
 }
+
 .chooser-list li.active {
   border-color: #4fc08d;
   background: #4fc08d;

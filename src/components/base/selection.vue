@@ -4,11 +4,13 @@
         <span>{{ selections[nowIndex].label }}</span>
         <div class="arrow"></div>
       </div>
-      <div class="selection-list" v-if="isDrop">
-        <ul>
-          <li v-for="(item, index) in selections" @click="chooseSelection(index)">{{ item.label }}</li>
-        </ul>
-      </div>
+      <transition name="slideDown">
+        <div class="selection-list" v-if="isDrop">
+          <ul>
+            <li v-for="(item, index) in selections" @click="chooseSelection(index)">{{ item.label }}</li>
+          </ul>
+        </div>
+      </transition>
     </div>
 </template>
 
@@ -31,12 +33,12 @@ export default {
   },
   methods: {
     toggleDrop () {
-      this.isDrop = !this.isDrop
+      this.isDrop = !this.isDrop;
     },
     chooseSelection (index) {
-      this.nowIndex = index
-      this.isDrop = false
-      this.$emit('on-change', this.selections[this.nowIndex])
+      this.nowIndex = index;
+      this.isDrop = false;
+      this.$emit('on-change', this.selections[this.nowIndex]);
     }
   }
 }
@@ -94,5 +96,14 @@ export default {
 }
 .selection-list li:hover {
   background: #e3e3e3;
+}
+
+.slideDown-enter-active, .slideDown-leave-active {
+  transition: all 0.2s ease;
+}
+
+.slideDown-enter, .slideDown-leave-active {
+  transform: translateY(-30%);
+  opacity: 0;
 }
 </style>

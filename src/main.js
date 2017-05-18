@@ -2,14 +2,13 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import Vuex from 'vuex';
-import VeeValidate from 'vee-validate';
 import Layout from './components/layout';
 import router from './router';
 import VueResourse from 'vue-resource';
+import _ from 'lodash';
 import 'animate.css';
 
 Vue.use(VueResourse);
-Vue.use(VeeValidate);
 Vue.use(Vuex);
 
 let store = new Vuex.Store({

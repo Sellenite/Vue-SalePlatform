@@ -14,7 +14,9 @@ Vue.use(Vuex);
 let store = new Vuex.Store({
   /* 数据中心 */
   state: {
-    totalPrice: 0
+    totalPrice: 0,
+    orderList: [],
+    params: {}
   },
   /* 方法，可以处理state，调用需用commit */
   mutations: {
@@ -23,6 +25,12 @@ let store = new Vuex.Store({
     },
     decrement(state, price) {
       state.totalPrice -= price;
+    },
+    updateOrderList(state, payload) {
+      state.orderList = payload;
+    },
+    updateParams(state, payload) {
+      state.params = payload;
     }
   },
   /* 异步处理mutations，无法处理state，调用需用dispatch */
@@ -32,13 +40,22 @@ let store = new Vuex.Store({
     },
     decrease(context, price) {
       context.commit('decrement', price);
+    },
+    fetchOrderList({ commit, state }) {
+      Vue.http.post('/api/getOrderList', state.params)
+        .then((res) => {
+          commit('updateOrderList', res.data.list)
+        }, (err) => {
+          console.log(err)
+        })
     }
   },
   /* 对顶层数据进行过滤。处理state，调用需用getters */
   getters: {
     getTotal(state) {
       return state.totalPrice + '￥';
-    }
+    },
+    getOrderList: state => state.orderList
   }
 });
 

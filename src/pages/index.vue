@@ -159,6 +159,7 @@ export default {
         }, (err) => {
             console.log(err);
         });
+        console.log(this.$store);
     }
 };
 </script>

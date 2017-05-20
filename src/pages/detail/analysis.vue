@@ -10,7 +10,7 @@
           购买数量：
         </div>
         <div class="sales-board-line-right">
-          <v-counter @on-change="onParamChange('buyNum', $event)"></v-counter>
+          <v-counter @on-change="onParamChange('buyNum', $event)" :min="1" :max="20"></v-counter>
         </div>
       </div>
       <div class="sales-board-line">
@@ -89,9 +89,7 @@
           <td>{{ buyNum }}</td>
           <td>{{ buyType.label }}</td>
           <td>{{ period.label }}</td>
-          <td>
-            <span v-for="item in versions">{{ item.label }}</span>
-          </td>
+          <td>{{ versionsComputed }}</td>
           <td>{{ price }}</td>
         </tr>
       </table>
@@ -238,6 +236,15 @@ export default {
           this.isShowBuyDialog = false
           this.isShowErrDialog = true
         })
+    }
+  },
+  computed: {
+    versionsComputed() {
+      // 用_.map()方法重组数组，然后利用join转换成字符串，并在每个元素之间添加逗号分隔
+      var versionsMap = _.map(this.versions, (idx) => {
+        return idx.label
+      });
+      return versionsMap.join('，')
     }
   },
   mounted() {

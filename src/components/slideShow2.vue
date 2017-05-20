@@ -12,11 +12,11 @@
     </div>
     <h2>{{ slides[nowIndex].title }}</h2>
     <ul class="slide-pages">
-      <li @click="goto(prevIndex)">&lt;</li>
+      <li @click="goto(-1, true)">&lt;</li>
       <li v-for="(item, index) in slides" @click="goto(index)">
         <a :class="{on: index === nowIndex}">{{ index + 1 }}</a>
       </li>
-      <li @click="goto(nextIndex)">&gt;</li>
+      <li @click="goto(1, true)">&gt;</li>
     </ul>
   </div>
 </template>
@@ -39,33 +39,24 @@ export default {
       isShow: true
     };
   },
-  computed: {
-    prevIndex() {
-      if (this.nowIndex === 0) {
-        return this.slides.length - 1;
-      } else {
-        return this.nowIndex - 1;
-      }
-    },
-    nextIndex() {
-      if (this.nowIndex === this.slides.length - 1) {
-        return 0;
-      } else {
-        return this.nowIndex + 1;
-      }
-    }
-  },
   methods: {
-    goto(index) {
+    goto(index, flag) {
+      var _index;
+      if (index === -1 && flag) {
+        this.nowIndex === 0 ? _index = this.slides.length - 1 : _index = this.nowIndex - 1;
+      } else if (index === 1 && flag) {
+        this.nowIndex === this.slides.length - 1 ? _index = 0 : _index = this.nowIndex + 1;
+      }
       this.isShow = false;
+      console.log(index, _index);
       setTimeout(() => {
         this.isShow = true;
-        this.nowIndex = index;
+        flag ? this.nowIndex = _index : this.nowIndex = index;
       }, 100);
     },
     runInv() {
       this.invId = setInterval(() => {
-        this.goto(this.nextIndex);
+        this.goto(1, true);
       }, this.invTime);
     },
     clearInv() {

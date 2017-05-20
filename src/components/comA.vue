@@ -10,16 +10,39 @@
             <slot name="footer"></slot>
         </div>
         <button v-on:click="clickAAA">测试父元素传入的值是否带有全部内容</button>
+        <button v-on:click="clickBBB">测试watch里的对象data</button>
     </div>
 </template>
 
 <script>
     export default {
         props: ['valueForComA', 'testComAFunc'],
+        data() {
+            return {
+                testWatch: {
+                    value1: 1,
+                    value2: 2,
+                    value3: 3
+                }
+            }
+        },
+        computed: {
+            testWatchHook() {
+                return this.testWatch.value1;
+            }
+        },
+        watch: {
+            testWatchHook(val, oldVal) {
+                console.log(val, oldVal);
+            } 
+        },
         methods: {
             clickAAA() {
                 this.testComAFunc[0].showHref();
                 console.log(this.testComAFunc);
+            },
+            clickBBB() {
+                this.testWatch.value1++;
             }
         }
     };

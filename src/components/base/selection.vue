@@ -1,17 +1,17 @@
 <template>
-    <div class="selection-component">
-      <div class="selection-show" @click="toggleDrop">
-        <span>{{ selections[nowIndex].label }}</span>
-        <div class="arrow"></div>
-      </div>
-      <transition name="slideDown">
-        <div class="selection-list" v-if="isDrop">
-          <ul>
-            <li v-for="(item, index) in selections" @click="chooseSelection(index)">{{ item.label }}</li>
-          </ul>
-        </div>
-      </transition>
+  <div class="selection-component">
+    <div class="selection-show" @click="toggleDrop">
+      <span>{{ selections[nowIndex].label }}</span>
+      <div class="arrow"></div>
     </div>
+    <transition name="slideDown">
+      <div class="selection-list" v-if="isDrop">
+        <ul>
+          <li v-for="(item, index) in selections" @click="chooseSelection(index)">{{ item.label }}</li>
+        </ul>
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -25,21 +25,28 @@ export default {
       }]
     }
   },
-  data () {
+  data() {
     return {
       isDrop: false,
       nowIndex: 0
     }
   },
   methods: {
-    toggleDrop () {
+    toggleDrop() {
       this.isDrop = !this.isDrop;
     },
-    chooseSelection (index) {
+    chooseSelection(index) {
       this.nowIndex = index;
       this.isDrop = false;
       this.$emit('on-change', this.selections[this.nowIndex]);
     }
+  },
+  mounted() {
+    // 判断如果点击的target不包含在这个组件里的话，就收起列表
+    document.addEventListener('click', (e) => {
+      if (!this.$el.contains(e.target))
+        this.isDrop = false
+    }, false);
   }
 }
 </script>
@@ -49,6 +56,7 @@ export default {
   position: relative;
   display: inline-block;
 }
+
 .selection-show {
   border: 1px solid #e3e3e3;
   padding: 0 20px 0 10px;
@@ -60,6 +68,7 @@ export default {
   border-radius: 3px;
   background: #fff;
 }
+
 .selection-show .arrow {
   display: inline-block;
   border-left: 4px solid transparent;
@@ -72,6 +81,7 @@ export default {
   margin-right: -14px;
   vertical-align: middle;
 }
+
 .selection-list {
   display: inline-block;
   position: absolute;
@@ -83,6 +93,7 @@ export default {
   border-bottom: 1px solid #e3e3e3;
   z-index: 5;
 }
+
 .selection-list li {
   padding: 5px 15px 5px 10px;
   border-left: 1px solid #e3e3e3;
@@ -92,17 +103,19 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-
 }
+
 .selection-list li:hover {
   background: #e3e3e3;
 }
 
-.slideDown-enter-active, .slideDown-leave-active {
+.slideDown-enter-active,
+.slideDown-leave-active {
   transition: all 0.2s ease;
 }
 
-.slideDown-enter, .slideDown-leave-active {
+.slideDown-enter,
+.slideDown-leave-active {
   transform: translateY(-30%);
   opacity: 0;
 }
